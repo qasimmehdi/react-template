@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import AppRouter from "./navigation/router";
+import "./axios-defaults";
+import { useDispatch, useSelector } from "react-redux";
+import { LOG_IN } from "./store/actions";
+import { profileRequest } from "./services/auth-service";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const dispatch = useDispatch();
+  if (localStorage.getItem("access_token")) {
+    console.log("getting profile");
+    profileRequest()
+      .then((res) => {
+        dispatch({
+          type: LOG_IN,
+          payload: {
+            myProfile: res.data,
+          },
+        });
+      })
+      .catch((err) => console.log(err));
+  }
+
+  return <AppRouter />;
 }
 
 export default App;
