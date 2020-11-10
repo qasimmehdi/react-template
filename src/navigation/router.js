@@ -13,14 +13,14 @@ const fallbackUri = `${isAuthenticated() ? "" : "/login"}`;
 
 const AppRouter = () => {
   const availableRoutes = routes.filter((route) => {
-    return route.roles.includes(authRoles.user);
+    return route.roles.includes(authRoles.user) || route.roles.length === 0;
   });
   console.log(availableRoutes);
   return (
     <Router>
       {availableRoutes.map((route, index) => (
         <div>
-          <Link key={index} to={route.path}>
+          <Link key={`${route.name}-${index}`} to={route.path}>
             {route.name}
           </Link>
         </div>
@@ -28,7 +28,7 @@ const AppRouter = () => {
       <Switch>
         {availableRoutes.map((route, index) => (
           <RouteCustom
-            key={index}
+            key={`${index}-${route.name}`}
             path={route.path}
             exact={route.exact}
             component={route.component}

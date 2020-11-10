@@ -22,7 +22,7 @@ const routes = [
     path: "/login",
     component: Login,
     isProtected: false,
-    roles: [authRoles.guest]
+    roles: []
   },
   {
     name: "Test",
